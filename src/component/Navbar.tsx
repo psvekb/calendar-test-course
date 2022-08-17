@@ -1,12 +1,17 @@
 import { Layout, Menu, Row } from 'antd';
 import React, { FC } from 'react';
+import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import { useActions } from '../hooks/useActions';
 import { useTypedSelector } from '../hooks/useTypedSelector';
 import { RouteNames } from '../router'
+import { AuthActionCreators } from '../store/reducers/auth/action-creators';
 
 const Navbar: FC = () => {
 	const router = useHistory()
-	const { isAuth } = useTypedSelector(state => state.auth)
+	const { isAuth, user } = useTypedSelector(state => state.auth)
+	const { logout } = useActions()
+
 	return (
 		<Layout.Header >
 			<Row justify='end'>
@@ -14,10 +19,10 @@ const Navbar: FC = () => {
 					?
 					<>
 						<div style={{ color: 'white' }}>
-							Ulbi TV
+							{user.username}
 						</div>
 						<Menu theme='dark' mode='horizontal' selectable={false}>
-							<Menu.Item onClick={() => console.log('exit ?')} key={1}>
+							<Menu.Item onClick={logout} key={1}>
 								Exit
 							</Menu.Item>
 						</Menu>
